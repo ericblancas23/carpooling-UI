@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, StyleSheet, Text, ImageBackground,
 TextInput, TouchableOpacity, Image, Animated, Dimensions } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+import { Icon } from 'native-base';
 
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -20,7 +21,19 @@ class LoginScreen extends Component {
         }).start()
     }
 
+    decreaseHieghtOfLogin = () => {
+        Animated.timing(this.loginheight, {
+            toValue: 150,
+            duration:300
+        }).start()
+    }
+
 render() {
+
+    const headerBackArrowOpacity = this.loginheight.interpolate({
+        inputRange: [150, SCREEN_HEIGHT],
+        outputRange: [0, 1]
+    })
 
     const headerTextOpacity = this.loginheight.interpolate({
         inputRange: [150, SCREEN_HEIGHT],
@@ -29,11 +42,33 @@ render() {
 
     const marginTop = this.loginheight.interpolate({
         inputRange: [150, SCREEN_HEIGHT],
-        outputRange: [1, 0]
+        outputRange: [25, 100]
     })
 
     return(
         <View style={{ flex: 1 }}>
+
+        <Animated.View
+            style={{ position: 'absolute',
+                     height: 60,
+                     width: 60,
+                     top: 60,
+                     left: 25,
+                     zIndex: 100,
+                     opacity: headerBackArrowOpacity
+        
+        }}
+        >
+           <TouchableOpacity
+                onPress={() => this.decreaseHieghtOfLogin()}
+           >
+               <Icon
+                name="md-arrow-back"
+                style={{ color: 'black' }}
+               />
+           </TouchableOpacity>
+        </Animated.View>
+
           <ImageBackground
                 source={require('../../assets/Screen-Shot-2015-06-11-at-16.36.34.png')}
                 style={{ flex: 1 }}
@@ -62,18 +97,18 @@ render() {
                             backgroundColor: 'white'
                         }}
                     >
-                        <View 
+                        <Animated.View 
                             style={{
-                                opacity:1, //animate
+                                opacity:headerTextOpacity, //animate
                                 alignItems: 'flex-start',
                                 paddingHorizontal: 25,
-                                marginTop: 25 //animate
+                                marginTop: marginTop //animate
                             }}
                         >
                             <Text
                                 style={{ fontSize: 24 }}
                             >Get moving with UBER</Text>
-                        </View>
+                        </Animated.View>
 
                         <TouchableOpacity
                             accessible={true}
