@@ -1,12 +1,37 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, Text, ImageBackground,
-TextInput, TouchableOpacity, Image } from 'react-native';
+TextInput, TouchableOpacity, Image, Animated, Dimensions } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+
+
+const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 class LoginScreen extends Component {
     static navigationOptions = { header: null};
 
+    componentWillMount() {
+        this.loginheight = new Animated.Value(150)
+    }
+
+    increaseHeightOfLogin = () => {
+        Animated.timing(this.loginheight, {
+            toValue: SCREEN_HEIGHT,
+            duration:300
+        }).start()
+    }
+
 render() {
+
+    const headerTextOpacity = this.loginheight.interpolate({
+        inputRange: [150, SCREEN_HEIGHT],
+        outputRange: [1, 0]
+    })
+
+    const marginTop = this.loginheight.interpolate({
+        inputRange: [150, SCREEN_HEIGHT],
+        outputRange: [1, 0]
+    })
+
     return(
         <View style={{ flex: 1 }}>
           <ImageBackground
@@ -31,9 +56,9 @@ render() {
                 <Animatable.View
                     animation="slideInUp" iterationCount={1}
                 >
-                    <View
+                    <Animated.View
                         style={{ 
-                            height: 150,
+                            height: this.loginheight,
                             backgroundColor: 'white'
                         }}
                     >
@@ -50,7 +75,10 @@ render() {
                             >Get moving with UBER</Text>
                         </View>
 
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                            accessible={true}
+                            onPress={() => this.increaseHeightOfLogin()}
+                        >
                             <View 
                                 style={{
                                     marginTop: 25,
@@ -63,6 +91,7 @@ render() {
                                     style={{ height: 24, width: 24, resizeMode: 'contain'}}
                                 />
                                 <View
+                                    pointerEvents="none"
                                     style={{ flexDirection: 'row', flex: 1}}
                                 >
                                     <Text
@@ -78,7 +107,7 @@ render() {
                                 </View>
                             </View>
                         </TouchableOpacity>
-                    </View>
+                    </Animated.View>
 
 
                     <View
