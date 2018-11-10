@@ -18,7 +18,9 @@ class LoginScreen extends Component {
         Animated.timing(this.loginheight, {
             toValue: SCREEN_HEIGHT,
             duration:300
-        }).start()
+        }).start(() => {
+            this.refs.textInputMobile.focus();
+        })
     }
 
     decreaseHieghtOfLogin = () => {
@@ -67,6 +69,23 @@ render() {
                 style={{ color: 'black' }}
                />
            </TouchableOpacity>
+        </Animated.View>
+
+        <Animated.View
+            style={{
+                position: 'absolute',
+                height: 60, width: 60,
+                right: 10,
+                bottom: 10, //animated
+                opacity: 1,
+                zIndex: 100,
+                backgroundColor: 'black',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 30
+            }}
+        >
+            <Icon name="md-arrow-forward" style={{ color: 'white'}}/>
         </Animated.View>
 
           <ImageBackground
@@ -133,6 +152,7 @@ render() {
                                         style={{ fontSize: 20, paddingHorizontal: 10}}
                                     >+1</Text>
                                     <TextInput
+                                        ref="textInputMobile"
                                         style={{
                                             flex: 1, fontSize: 20
                                         }}
