@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, Text, ImageBackground,
-TextInput, TouchableOpacity, Image, Animated, Dimensions } from 'react-native';
+TextInput, TouchableOpacity, Image, Animated, Dimensions, Keyboard } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { Icon } from 'native-base';
 
@@ -24,6 +24,7 @@ class LoginScreen extends Component {
     }
 
     decreaseHieghtOfLogin = () => {
+        Keyboard.dismiss();
         Animated.timing(this.loginheight, {
             toValue: 150,
             duration:300
