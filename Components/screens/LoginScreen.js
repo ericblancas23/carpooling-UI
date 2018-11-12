@@ -11,6 +11,12 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 class LoginScreen extends Component {
     static navigationOptions = { header: null};
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            placeHolderText: 'Enter Mobile Number'
+        }
+    }
     componentWillMount() {
         this.loginheight = new Animated.Value(150)
 
