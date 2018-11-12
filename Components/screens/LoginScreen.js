@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, Text, ImageBackground,
-TextInput, TouchableOpacity, Image, Animated, Dimensions, Keyboard } from 'react-native';
+TextInput, TouchableOpacity, Image, Animated, Dimensions, Keyboard,
+Platform } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { Icon } from 'native-base';
 
@@ -13,19 +14,60 @@ class LoginScreen extends Component {
     componentWillMount() {
         this.loginheight = new Animated.Value(150)
 
-        this.keyBoardWillShow = Keyboard.addListener('keyBoardWillShow',this.keyBoardWillShow)
-        this.keyBoardWillHide = Keyboard.addListener('keyBoardWillHide', this.keyBoardWillHide)
+        this.keyboardWillShowListener = Keyboard.addListener('keyboardWillShow',this.keyboardWillShow);
+        this.keyboardWillHideListener = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide);
 
-        this.keyBoardDidShow = Keyboard.addListener('keyBoardDidShow',this.keyBoardWillShow)
-        this.keyBoardDidHide = Keyboard.addListener('keyBoardDidHide', this.keyBoardWillHide)
+        this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow',this.keyboardWillShow);
+        this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardWillHide);
        
-        this.keyBoardHeight = new Animated.Value(0)
-        this.forwardArrowOpacity = new Animated.Value(0)
+        this.keyboardHeight = new Animated.Value(0);
+        this.forwardArrowOpacity = new Animated.Value(0);
+        this.borderBottomWidth = new Animated.Value(0);
     
     }
 
-    keyBoardWillShow = (e) => {
-      
+    keyboardWillHide = (event) => {
+
+        if (Platform.OS == 'android') duration = 100;
+        else duration = event.duration;
+
+        Animated.parallel([
+            Animated.timing(this.keyboardHeight, {
+                duration: duration + 100,
+                toValue: 0
+            }), 
+            Animated.timing(this.forwardArrowOpacity, {
+                duration: duration,
+                toValue: 0
+            }),
+            Animated.timing(this.borderBottomWidth, {
+                duration: duration,
+                toValue: 0
+            })
+        ]).start()
+    }
+
+    keyboardWillShow = (event) => {
+
+        if (Platform.OS == 'android') duration = 100;
+        else duration = event.duration;
+
+        Animated.parallel([
+            Animated.timing(this.keyboardHeight, {
+                duration: duration + 100,
+                toValue: event.endCoordinates.height + 10
+            }), 
+            Animated.timing(this.forwardArrowOpacity, {
+                duration: duration,
+                toValue: 1
+            }),
+            Animated.timing(this.borderBottomWidth, {
+                duration: duration,
+                toValue: 1
+            })
+        ]).start()
+
+
     }
 
     increaseHeightOfLogin = () => {
@@ -91,8 +133,8 @@ render() {
                 position: 'absolute',
                 height: 60, width: 60,
                 right: 10,
-                bottom: 10, //animated
-                opacity: 1,
+                bottom: this.keyboardHeight, //animated
+                opacity: this.forwardArrowOpacity,
                 zIndex: 100,
                 backgroundColor: 'black',
                 alignItems: 'center',
@@ -159,9 +201,11 @@ render() {
                                     source={require('../../assets/smart-drawing-tiny-car-4.png')}
                                     style={{ height: 24, width: 24, resizeMode: 'contain'}}
                                 />
-                                <View
+                                <Animated.View
                                     pointerEvents="none"
-                                    style={{ flexDirection: 'row', flex: 1}}
+                                    style={{ flexDirection: 'row', flex: 1,
+                                    borderBottomWidth: this.borderBottomWidth
+                                }}
                                 >
                                     <Text
                                         style={{ fontSize: 20, paddingHorizontal: 10}}
@@ -174,7 +218,7 @@ render() {
                                         placeholder="Enter Mobile Number"
                                         underlineColorAndroid="tranparent"
                                     />
-                                </View>
+                                </Animated.View>
                             </View>
                         </TouchableOpacity>
                     </Animated.View>
