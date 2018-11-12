@@ -12,6 +12,20 @@ class LoginScreen extends Component {
 
     componentWillMount() {
         this.loginheight = new Animated.Value(150)
+
+        this.keyBoardWillShow = Keyboard.addListener('keyBoardWillShow',this.keyBoardWillShow)
+        this.keyBoardWillHide = Keyboard.addListener('keyBoardWillHide', this.keyBoardWillHide)
+
+        this.keyBoardDidShow = Keyboard.addListener('keyBoardDidShow',this.keyBoardWillShow)
+        this.keyBoardDidHide = Keyboard.addListener('keyBoardDidHide', this.keyBoardWillHide)
+       
+        this.keyBoardHeight = new Animated.Value(0)
+        this.forwardArrowOpacity = new Animated.Value(0)
+    
+    }
+
+    keyBoardWillShow = (e) => {
+      
     }
 
     increaseHeightOfLogin = () => {
