@@ -50,7 +50,7 @@ class LoginScreen extends Component {
                 duration: duration,
                 toValue: 0
             })
-        ])
+        ]).start();
     }
 
     keyboardWillShow = (event) => {
