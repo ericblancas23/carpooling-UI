@@ -60,7 +60,7 @@ class LoginScreen extends Component {
 
         Animated.parallel([
             Animated.timing(this.keyboardHeight, {
-                duration: duration + 500,
+                duration: duration + 100,
                 toValue: event.endCoordinates.height + 10
             }), 
             Animated.timing(this.forwardArrowOpacity, {
