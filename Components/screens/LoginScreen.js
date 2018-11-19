@@ -218,6 +218,8 @@ render() {
                                     >+1</Text>
                                     <TextInput
                                         ref="textInputMobile"
+                                        placeholder={this.state.placeHolderText}
+                                        keyboardType= "numeric"
                                         style={{
                                             flex: 1, fontSize: 20
                                         }}
